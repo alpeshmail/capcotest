@@ -1,0 +1,8 @@
+div {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 500px;
+    margin: auto;
+  }
+  

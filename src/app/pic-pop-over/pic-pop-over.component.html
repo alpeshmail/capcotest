@@ -1,0 +1,10 @@
+<div>
+  <div class="row itemsBlock" >
+    <div *ngFor="let photo of PhotoList" [@photoState]='photo.State' class="col-md-4 col-sm-6 col-12">
+         <div  (mouseenter)="onMouseEnter(photo)" (mouseleave)="onMouseLeave(photo)">
+            <img  [src]="photo.Path" style="width:217px;height:217px;" />
+         </div>
+          
+      </div>
+  </div>
+</div>
