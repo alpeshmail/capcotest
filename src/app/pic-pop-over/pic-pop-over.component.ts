@@ -12,20 +12,7 @@ export class PicPopOverComponent implements OnInit {
 
   PhotoList : PhotoModel[];
   constructor(private picPopVerService:PicPopVerService) {
-    // this.PhotoList = [
-    //   {Path:"assets/images/img1.jpg",State:'inactive'},
-    //   {Path:"assets/images/img2.jpg",State:'inactive'},
-    //   {Path:"assets/images/img3.jpg",State:'inactive'},
-    //   {Path:"assets/images/img4.jpg",State:'inactive'},
-    //   {Path:"assets/images/img5.jpg",State:'inactive'},
-    //   {Path:"assets/images/img6.jpg",State:'inactive'},
-    //   {Path:"assets/images/img7.jpg",State:'inactive'},
-    //   {Path:"assets/images/img8.jpg",State:'inactive'},
-    //   {Path:"assets/images/img9.jpg",State:'inactive'},
-    //   {Path:"assets/images/img10.jpg",State:'inactive'},
-    //   {Path:"assets/images/img11.jpg",State:'inactive'},
-    //   {Path:"assets/images/img12.jpg",State:'inactive'},
-    // ];
+    
    }
 
   ngOnInit() {
@@ -38,12 +25,31 @@ export class PicPopOverComponent implements OnInit {
     });
   }
 
-  @HostListener('mouseenter') onMouseEnter(photoItem) {
-    photoItem.State = (photoItem.State === 'active' ? 'inactive' : 'active');
+  @HostListener('mouseenter') onMouseEnter(event : MouseEvent, photoItem : PhotoModel) {
+    let calState = this.getMousePosition(event);
+    photoItem.State = calState;
   }
 
-  @HostListener('mouseleave') onMouseLeave(photoItem) {
-    photoItem.State = (photoItem.State === 'active' ? 'inactive' : 'active');
+  @HostListener('mouseleave') onMouseLeave( photoItem : PhotoModel) {
+    //photoItem.State = (photoItem.State === 'active' ? 'inactive' : 'active');
+    photoItem.State = 'inactive' ;
+  }
+
+  getMousePosition(event: MouseEvent){
+    //const direction = event.type === 'mouseenter' ? 'active' : 'out';
+    const direction =  'active'
+    const host = event.target as HTMLElement;
+    const w = host.offsetWidth;
+    const h = host.offsetHeight;
+
+    const x = (event.pageX - host.offsetLeft - (w / 2)) * (w > h ? (h / w) : 1);
+    const y = (event.pageY - host.offsetTop - (h / 2)) * (h > w ? (w / h) : 1);
+    const states = ['top', 'right', 'bottom', 'left'];
+    const side = Math.round((((Math.atan2(y, x) * (180 / Math.PI)) + 180) / 90) + 3) % 4;
+
+    let calState : string = `${states[side]}-${direction}`
+    //return states[side];
+    return calState;
   }
 
 }
